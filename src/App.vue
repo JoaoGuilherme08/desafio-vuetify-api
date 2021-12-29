@@ -1,13 +1,18 @@
 <template>
   <v-app>
     <v-card>
-      <v-navigation-drawer v-model="drawer" :mini-variant.sync="mini" permanent>
+      <v-navigation-drawer
+        v-model="drawer"
+        :mini-variant.sync="mini"
+        permanent
+        app
+      >
         <v-list-item class="px-2">
           <v-list-item-avatar>
-            <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
+            <v-img src="./assets/ydnZ3AGH_400x400.jpg"></v-img>
           </v-list-item-avatar>
 
-          <v-list-item-title>John Leider</v-list-item-title>
+          <v-list-item-title>Vuetisolinf</v-list-item-title>
 
           <v-btn icon @click.stop="mini = !mini">
             <v-icon>mdi-chevron-left</v-icon>
@@ -17,7 +22,12 @@
         <v-divider></v-divider>
 
         <v-list dense>
-          <v-list-item v-for="item in items" :key="item.title" link>
+          <v-list-item
+            v-for="item in items"
+            :key="item.title"
+            link
+            :to="item.path"
+          >
             <v-list-item-icon>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-icon>
@@ -28,10 +38,10 @@
           </v-list-item>
         </v-list>
       </v-navigation-drawer>
+      <v-content>
+        <router-view></router-view>
+      </v-content>
     </v-card>
-    <v-content>
-      <router-view></router-view>
-    </v-content>
   </v-app>
 </template>
 
@@ -41,12 +51,12 @@ export default {
     return {
       drawer: true,
       items: [
-        { title: "Home", icon: "mdi-home-city" },
-        { title: "João Cobol", icon: "mdi-account" },
-        { title: "Rodrigo José", icon: "mdi-account" },
-        { title: "Lucas Rodrigo", icon: "mdi-account" },
-        { title: "Weslley Costa", icon: "mdi-account" },
-        { title: "Luana Miki", icon: "mdi-account" },
+        { title: "Home", icon: "mdi-home-city", path: "/" },
+        { title: "João Cobol", icon: "mdi-account", path: "/Joao" },
+        { title: "Rodrigo José", icon: "mdi-account", path: "/Rodrigo" },
+        { title: "Lucas Rodrigo", icon: "mdi-account", path: "/Lucas" },
+        { title: "Weslley Costa", icon: "mdi-account", path: "/Weslley" },
+        { title: "Luana Miki", icon: "mdi-account", path: "/Luana" },
       ],
       mini: true,
     };

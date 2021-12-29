@@ -1,0 +1,5 @@
+<template>
+  <div class="about">
+    <h1>Rodrigo page</h1>
+  </div>
+</template>
