@@ -36,7 +36,14 @@
         </v-form>
       </v-card>
 
-      <v-card class="mx-auto mt-5" elevation="10" v-show="exibir" id="teste">
+      <v-card
+        class="mx-auto mt-5"
+        elevation="10"
+        v-show="exibir"
+        id="teste"
+        width="1000"
+        shaped
+      >
         <v-container>
           <v-row justify="space-around">
             <v-card width="400">
@@ -126,7 +133,7 @@ export default {
         const response = await fetch(
           "https://br1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" +
             this.name +
-            "?api_key=RGAPI-d9ed3552-3571-4581-80e0-e7bd124443a5"
+            "?api_key=RGAPI-86f2dfe0-f406-4b72-abb1-8b7b8bca423a"
         );
         const data = await response.json();
         this.Level = data.summonerLevel;
@@ -137,7 +144,7 @@ export default {
         const responseChampion = await fetch(
           "https://br1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/" +
             data.id +
-            "?api_key=RGAPI-d9ed3552-3571-4581-80e0-e7bd124443a5"
+            "?api_key=RGAPI-86f2dfe0-f406-4b72-abb1-8b7b8bca423a"
         );
         const championData = await responseChampion.json();
         console.log(championData);
@@ -169,7 +176,7 @@ export default {
         const getTier = await fetch(
           "https://br1.api.riotgames.com/lol/league/v4/entries/by-summoner/" +
             data.id +
-            "?api_key=RGAPI-d9ed3552-3571-4581-80e0-e7bd124443a5"
+            "?api_key=RGAPI-86f2dfe0-f406-4b72-abb1-8b7b8bca423a"
         );
         const Tier = await getTier.json();
         if (Tier[0].tier != undefined) {
