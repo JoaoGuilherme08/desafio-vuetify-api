@@ -109,6 +109,8 @@ export default {
     },
 
 
+                    /* Dolar Hoje */
+
     getUrl(moedas) {
       return [
         "http://free.currencyconverterapi.com/api/v5/convert?q=",
@@ -133,6 +135,11 @@ export default {
         });
     },
 
+    
+    
+                /* Cotação hoje  */
+    
+    
     async getPaises() {
       const response = await fetch(
         "http://free.currencyconverterapi.com/api/v5/currencies?apiKey="+
