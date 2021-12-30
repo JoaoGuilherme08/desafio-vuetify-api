@@ -39,38 +39,61 @@
     </v-container>
 
     <!-- dados do jogo -->
-    <v-overlay color="red" :opacity="1" :value="overlay"  >
-      <v-card  color="blue" class="mx-auto">  
-        <v-btn color="orange lighten-2"  @click="overlay = false"  > Hide Overlay  </v-btn>
-      </v-card>
-    </v-overlay>
+  <v-overlay :value="overlay" :opacity="0.5">
+    <v-card  class="mx-auto scroll mt-9" dark  max-width="60%" >
+      <v-card-title>
+        <table style="width: 100%; table-layout: fixed" >
+          <tr>
+            <td>
+              <v-btn @click="overlay = false"> Fechar </v-btn>
+            </td>
+            <td style="text-align: center;">
+              <h1>{{detalha.name}}</h1>
+            </td>
+            <td></td>
+          </tr>
+        </table> 
+      </v-card-title>
+      <v-card-text>
+        <table style="width: 100%; table-layout: fixed" >
+          <thead>
+            <tr>
+              <td rowspan="2" style="width:70%">
+                <v-carousel height="20%" wid >
+                  <v-carousel-item v-for="(res, i) in detalha.short_screenshots" :key="i" :src="res.image" reverse-transition="fade-transition" transition="fade-transition"></v-carousel-item>
+                </v-carousel>
+              </td>
+              <td style="text-align: center;">
+                <h3>Data de lancamento</h3>
+                <h4>{{jogo.released}}</h4>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align: center;">
+                <table style="width: 100%; table-layout: fixed">
+                  <thead>
+                    <tr>
+                      <td  style="align: right; width:20%">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Metacritic_M.png" width="64">
+                      </td>
+                      <td style="align: left;">
+                        <h3>Metacritic</h3>
+                        <h4>{{jogo.metacritic}}</h4>
+                      </td>
+                    </tr>
+                  </thead>
+                </table>
+              </td>
+            </tr>
+          </thead>  
+        </table>
+        <h3 style="margin-top: 25px;"> {{jogo.description}}</h3>
+      </v-card-text>
+    </v-card>
+  </v-overlay>
+
   </v-app>
 </template>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <script>
