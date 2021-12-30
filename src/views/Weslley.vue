@@ -1,10 +1,7 @@
 <template>
   <v-app id="weslley">
     <div id="vue-app">
-      <v-main>
-        <v-container>
-          <v-card
-            :loading="loading"
+       <v-card
             class="mx-auto my-12"
             max-width="374"
             elevation="16"
@@ -27,14 +24,11 @@
               <h2 style="padding-top: 10px">{{ moedaB_value }}</h2>
             </v-card-text>
           </v-card>
-        </v-container>
-      </v-main>
     </div>
   </v-app>
 </template>
 <script>
 export default {
-  el: "#vue-app",
   name: "Conversor",
   props: {
     moedaA: {
