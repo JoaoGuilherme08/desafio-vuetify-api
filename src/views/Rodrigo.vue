@@ -3,23 +3,25 @@
     <!-- busca -->
     <v-card  class="ma-8">
       <v-card-text>
-        <v-text-field label="Pesquisar" append-icon="mdi-close" @click:append="() => (this.pesquisa = '')" required v-model="pesquisa" ></v-text-field>
-        <v-progress-linear indeterminate v-show="progresso"></v-progress-linear>
+        <v-text-field label="Pesquisar" append-icon="mdi-close" @keydown.enter="pesq" @click:append="() => (this.pesquisa_termo = '')" required v-model="pesquisa_termo" ></v-text-field>
+        <v-progress-linear indeterminate v-show="progresso_visivel"></v-progress-linear>
       </v-card-text>
       <v-card-actions>
-        <v-combobox v-model="pla_pesq" :items="items" item-text="name" label="Plataforma" multiple outlined dense ></v-combobox>
+        <v-combobox v-model="pesquisa_plataforma" :items="lista_plataformas" item-value="id" item-text="name" label="Plataforma" multiple outlined dense ></v-combobox>
+        <v-spacer></v-spacer>
+        <v-combobox v-model="pesquisa_genero" :items="lista_generos" item-value="id" item-text="name" label="Genero" multiple outlined dense ></v-combobox>
         <v-spacer></v-spacer>
         <v-btn @click="pesq" class="mx-2" fab dark color="blue">
           <v-icon dark> mdi-magnify </v-icon>
         </v-btn>
       </v-card-actions>
-    </v-card>
+    </v-card> 
 
 
     <!-- resultado -->
     <v-container fluid grid-list-xl>
       <v-layout wrap class="ma-auto">
-        <v-flex v-for="(res, i) in resultado" :key="i">
+        <v-flex v-for="(res, i) in pesquisa_resultado" :key="i">
            <v-hover>
              <template v-slot:default="{ hover }">
                <v-card class="mx-auto"  width="500">
@@ -28,7 +30,7 @@
                 </v-img>
                 <v-fab-transition>
                   <v-overlay v-if="hover" absolute color="#036358">
-                    <v-btn @click="[overlay = !overlay,detalha = res, infoJogo(res.id)]" >Detalhes</v-btn>
+                    <v-btn @click="[exibe_overlay = !overlay,jogo_selecionado = res, infoJogo(res.id)]" >Detalhes</v-btn>
                   </v-overlay>
                 </v-fab-transition>
             </v-card>
@@ -39,76 +41,108 @@
     </v-container>
 
     <!-- dados do jogo -->
-    <v-overlay color="red" :opacity="1" :value="overlay"  >
-      <v-card  color="blue" class="mx-auto">  
-        <v-btn color="orange lighten-2"  @click="overlay = false"  > Hide Overlay  </v-btn>
-      </v-card>
-    </v-overlay>
+  <v-overlay :value="exibe_overlay" :opacity="0.5">
+    <v-card  class="mx-auto scroll mt-9" dark  max-width="60%"  scrollable>
+      <v-card-title>
+        <table style="width: 100%; table-layout: fixed" >
+          <tr>
+            <td>
+              <v-btn @click="exibe_overlay = false"> Fechar </v-btn>
+            </td>
+            <td style="text-align: center;">
+              <h1>{{detalhes_jogo.name}}</h1>
+            </td>
+            <td></td>
+          </tr>
+        </table> 
+      </v-card-title>
+      <v-card-text>
+        <table style="width: 100%;table-layout: fixed; " >
+          <thead>
+            <tr height="25%">
+              <td rowspan="2" style="width:70%">
+                <v-carousel height="20%"  >
+                  <v-carousel-item v-for="(res, i) in jogo_selecionado.short_screenshots" :key="i" :src="res.image" reverse-transition="fade-transition" transition="fade-transition"></v-carousel-item>
+                </v-carousel>
+              </td>
+              <td style="text-align: center;">
+                <table style="width: 100%; table-layout: fixed">
+                  <thead>
+                    <tr>
+                      <td  style="text-align: right;">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Metacritic_M.png" width="64">
+                      </td>
+                      <td style="text-align: left;">
+                        <h3>Metacritic</h3>
+                        <h4>{{detalhes_jogo.metacritic}}</h4>
+                      </td>
+                    </tr>
+                  </thead>
+                </table>
+              </td>
+              
+            </tr>
+            <tr height="25%">
+              <td style="text-align: center;">
+                <h3>Data de lancamento</h3>
+                <h4>{{detalhes_jogo.released}}</h4>
+              </td>
+            </tr>
+          </thead>  
+        </table>
+        <h3 style="margin-top: 25px;"> {{detalhes_jogo.description}}</h3>
+      </v-card-text>
+    </v-card>
+  </v-overlay>
+
   </v-app>
 </template>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <script>
 export default {
   name: 'App',
   data: () => ({
-    pesquisa:"",
     token:"e4b742d87eeb4ee4b6ab70951d12a6c4",
-    resultado:[],
-    progresso: false,
-    items: [],
-    pla_pesq: [],
-    overlay: false,
-    detalha:{},
-    jogo:[],
+    pesquisa_termo:"",
+    pesquisa_resultado:[],
+    pesquisa_plataforma: [],
+    pesquisa_genero: [],
+    progresso_visivel: false,
+    lista_generos: [],
+    lista_plataformas:[],
+    exibe_overlay: false,
+    jogo_selecionado:{},
+    detalhes_jogo:[],
 
     
   }),
   mounted(){
     this.plataformas();
+    this.generos();
   },
   methods:{
     async pesq(){
-      this.progresso = true;
-      const responce = await fetch(`https://api.rawg.io/api/games?key=${this.token}&search=${this.pesquisa}`);
+      this.progresso_visivel = true;
+      const responce = await fetch(`https://api.rawg.io/api/games?key=${this.token}&search=${this.pesquisa_termo}`);
       const json = await responce.json();
-      this.resultado = json.results;
-      this.progresso = false;
+      this.pesquisa_resultado = json.results;
+      this.progresso_visivel = false;
     },
     async plataformas(){
       const responce = await fetch(`https://api.rawg.io/api/platforms?key=${this.token}`);
       const json = await responce.json();
-      this.items = json.results;
+      this.lista_plataformas = json.results;
+    },
+    async generos(){
+      const responce = await fetch(`https://api.rawg.io/api/genres?key=${this.token}`);
+      const json = await responce.json();
+      this.lista_generos = json.results;
     },
     async infoJogo(id){
       const responce = await fetch(`https://api.rawg.io/api/games/${id}?key=${this.token}`);
       const json = await responce.json();
-      this.jogo = json;
+      this.detalhes_jogo = json;
     }
   },
 };
