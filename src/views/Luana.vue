@@ -2,11 +2,13 @@
   <v-app>
     <v-card style="width: 500px;padding-bottom: -;margin-bottom: 20px;" class="mx-auto mt-5" color="pink lighten-4">
       <v-card-title>Informe a cidade</v-card-title>
-    <v-text-field required v-model="cidade" @keydown.enter="pesquisa">
+    <v-text-field v-on:blur="validaCidade" required v-model="cidade" @keydown.enter="pesquisa">
 
     </v-text-field>
     </v-card>
-<v-card
+<v-card 
+    id="card-tempo"
+    v-show="cardTempo"
     class="mx-auto"
     max-width="400"
   >
@@ -63,13 +65,20 @@
       cidade: "",
       resultado:[],
       icone:"",
+      cardTempo: false,
     }),
   methods:{
+    validaCidade(){
+      if(this.cidade == ""){
+        this.cardTempo = false;
+      }
+    },
     async pesquisa() {
       const response=await fetch(`http://api.weatherstack.com/forecast?access_key=fbced4667508feea2e1d32a047267824&query=${this.cidade}&langauge=pt`);
       const json=await response.json();
       this.resultado=json.current;
       this.icone=json.current.weather_icons[0];
+      this.cardTempo=true;
     }
   }
   };
