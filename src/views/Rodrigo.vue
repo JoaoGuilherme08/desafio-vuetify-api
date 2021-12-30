@@ -3,7 +3,7 @@
     <!-- busca -->
     <v-card  class="ma-8">
       <v-card-text>
-        <v-text-field label="Pesquisar" append-icon="mdi-close" @keydown.enter="pesq" @click:append="() => (this.pesquisa = '')" required v-model="pesquisa_termo" ></v-text-field>
+        <v-text-field label="Pesquisar" append-icon="mdi-close" @keydown.enter="pesq" @click:append="() => (this.pesquisa_termo = '')" required v-model="pesquisa_termo" ></v-text-field>
         <v-progress-linear indeterminate v-show="progresso_visivel"></v-progress-linear>
       </v-card-text>
       <v-card-actions>
@@ -15,7 +15,7 @@
           <v-icon dark> mdi-magnify </v-icon>
         </v-btn>
       </v-card-actions>
-    </v-card>
+    </v-card> 
 
 
     <!-- resultado -->
