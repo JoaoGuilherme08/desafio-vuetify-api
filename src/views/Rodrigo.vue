@@ -7,9 +7,9 @@
         <v-progress-linear indeterminate v-show="progresso_visivel"></v-progress-linear>
       </v-card-text>
       <v-card-actions>
-        <v-combobox v-model="pesquisa_plataforma" :items="lista_plataformas" item-value="id" item-text="name" label="Plataforma" multiple outlined dense ></v-combobox>
+        <v-combobox v-model="plataforma_selecionado" :items="lista_plataformas" item-value="id" item-text="name" label="Plataforma" multiple outlined dense ></v-combobox>
         <v-spacer></v-spacer>
-        <v-combobox v-model="pesquisa_genero" :items="lista_generos" item-value="id" item-text="name" label="Genero" multiple outlined dense ></v-combobox>
+        <v-combobox v-model="genero_selecionado" :items="lista_generos" item-value="id" item-text="name" label="Genero" multiple outlined dense ></v-combobox>
         <v-spacer></v-spacer>
         <v-btn @click="pesq" class="mx-2" fab dark color="blue">
           <v-icon dark> mdi-magnify </v-icon>
@@ -114,6 +114,8 @@ export default {
     exibe_overlay: false,
     jogo_selecionado:{},
     detalhes_jogo:[],
+    genero_selecionado:[],
+    plataforma_selecionado:[]
 
     
   }),
@@ -124,7 +126,24 @@ export default {
   methods:{
     async pesq(){
       this.progresso_visivel = true;
-      const responce = await fetch(`https://api.rawg.io/api/games?key=${this.token}&search=${this.pesquisa_termo}`);
+      var url = `https://api.rawg.io/api/games?key=${this.token}&search=${this.pesquisa_termo}`;
+      if(this.genero_selecionado.length>0){
+        var lista = "";
+        for (var i=0; i<this.genero_selecionado.length;i++){
+          lista = lista+this.genero_selecionado[i].id+",";
+        }
+        
+        url = url+"&platforms="+lista;
+      }
+      if(this.plataforma_selecionado.length>0){
+        var lista2 = "";
+        for (var i2=0;i2<this.plataforma_selecionado.length;i2++){
+          lista2 = lista2+this.plataforma_selecionado[i2].id+",";
+        }
+        url = url+"&genres="+lista2;
+      }
+      console.log(url);
+      const responce = await fetch(url);
       const json = await responce.json();
       this.pesquisa_resultado = json.results;
       this.progresso_visivel = false;
