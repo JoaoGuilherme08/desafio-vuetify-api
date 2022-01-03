@@ -189,14 +189,14 @@ export default {
           lista = lista + this.genero_selecionado[i].id + ",";
         }
 
-        url = url + "&platforms=" + lista;
+        url = url + "&genres=" + lista;
       }
       if (this.plataforma_selecionado.length > 0) {
         var lista2 = "";
         for (var i2 = 0; i2 < this.plataforma_selecionado.length; i2++) {
           lista2 = lista2 + this.plataforma_selecionado[i2].id + ",";
         }
-        url = url + "&genres=" + lista2;
+        url = url + "&platforms=" + lista2;
       }
       console.log(url);
       const responce = await fetch(url);
@@ -228,7 +228,6 @@ export default {
         "\n",
         ""
       );
-      console.log(this.detalhes_jogo.description);
     },
   },
 };
