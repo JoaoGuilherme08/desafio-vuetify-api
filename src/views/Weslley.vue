@@ -79,6 +79,7 @@
           "
           >Converter</v-btn
         >
+
       </v-card>
     </div>
   </v-app>
@@ -102,12 +103,6 @@ export default {
     };
   },
   methods: {
-    /* validaMoeda1() {
-      if (this.moedaB_value == "" || this.moedaB_ == String) {
-        window.alert("Digite um número");
-      }
-    }, */
-
     /* Dolar Hoje */
 
     getUrl(moedas) {
