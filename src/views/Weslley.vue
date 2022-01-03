@@ -1,6 +1,6 @@
 <template>
   <v-app id="weslley">
-    <div id="vue-app" style="display: flex; flex: flexbox">
+    <div id="vue-app">
       <!-- Dolar hoje -->
       <v-card
         class="mx-auto my-auto"
@@ -38,7 +38,7 @@
         width="500"
         style="width: 80em; top: 200px; opacity: 0.9"
       >
-        <v-card-title class="mx-16">Cotações hoje</v-card-title>
+        <h1 align="center">Cotações hoje</h1>
 
         <v-card-text>
           <div style="display: flex">
@@ -52,14 +52,6 @@
               cols="6"
             >
             </v-select>
-            <v-btn
-            @click="converter2">
-            <v-img
-            src="https://explainit.com.br/wp-content/uploads/2020/06/vai-volta.png"
-            max-height="50"
-            max-width="50"
-            ></v-img>
-            </v-btn>
             <v-select
               v-model="moedasB"
               :item-text="'moeda'"
@@ -98,8 +90,6 @@ export default {
       /* dolar hoje */
       moedaA: "USD",
       moedaB: "BRL",
-      moedaAA: "",
-      moedaBB: "",
       moedaA_value: "1",
       moedaB_value: 0,
       /* cotação hoje */
@@ -108,7 +98,6 @@ export default {
       moedasA: "",
       moedasB: "",
       key: "af285a9098c9614181bd",
-      listaId: "",
       items: [],
     };
   },
