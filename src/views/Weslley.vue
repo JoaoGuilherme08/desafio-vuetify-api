@@ -1,6 +1,7 @@
 <template>
   <v-app id="weslley">
-    <div id="vue-app">
+    <div id="vue-app" style="display: flex; flex: flexbox">
+      <!-- Dolar hoje -->
       <v-card
         class="mx-auto my-auto"
         max-width="400"
@@ -13,20 +14,22 @@
 
         <v-card-text>
           <h2>{{ moedaA }} Para {{ moedaB }}</h2>
-          <v-text-field
-            v-model="moedaA_value"
-          ></v-text-field>
+          <v-text-field v-model="moedaA_value"></v-text-field>
           <h2 style="padding-top: 10px">{{ moedaB_value }}</h2>
         </v-card-text>
-        <v-btn color="yellow lighten-3" v-on:click="converter"
-           style="
+        <v-btn
+          color="yellow lighten-3"
+          v-on:click="converter"
+          style="
             border-bottom-style: solid;
             border-bottom-width: 0px;
             bottom: 15px;
             margin-top: 15px;
-          ">Converter</v-btn
+          "
+          >Converter</v-btn
         >
       </v-card>
+      <!-- Cotação hoje -->
       <v-card
         class="mx-auto my-12"
         max-width="400"
@@ -35,31 +38,39 @@
         width="500"
         style="width: 80em; top: 200px; opacity: 0.9"
       >
-        <v-card-title class="mx-auto">Cotações hoje</v-card-title>
+        <v-card-title class="mx-16">Cotações hoje</v-card-title>
 
-        <v-card-text >
-       
+        <v-card-text>
+          <div style="display: flex">
+            <v-select
+              v-model="moedasA"
+              item-text="moeda"
+              :items="items"
+              label="Selecione a moeda"
+              required
+              style="padding-right: 25px"
+              cols="6"
+            >
+            </v-select>
+            <v-btn
+            @click="converter2">
+            <v-img
+            src="https://explainit.com.br/wp-content/uploads/2020/06/vai-volta.png"
+            max-height="50"
+            max-width="50"
+            ></v-img>
+            </v-btn>
+            <v-select
+              v-model="moedasB"
+              :item-text="'moeda'"
+              :items="items"
+              label="Selecione a moeda"
+              required
+              style="padding-left: 25px"
+              cols="6"
+            ></v-select>
+          </div>
 
-          <v-select
-            v-model="moedasA"
-            item-text="moeda"
-            :items="items"
-            label="Selecione a moeda"
-            required
-            style="padding-right: 250px; align-content: right;"
-            cols="6"
-          >
-          </v-select>
-          <v-select
-            v-model="moedasB"
-            :item-text="'moeda'"
-            :items="items"
-            label="Selecione a moeda"
-            required
-            style="padding-right: 250px; align-items: left;"
-            cols="6"
-          ></v-select>
-          
           <h2>{{ moedasA }} Para {{ moedasB }}</h2>
           <v-text-field v-model="moedasA_value"></v-text-field>
 
@@ -84,12 +95,14 @@
 export default {
   data() {
     return {
+      /* dolar hoje */
       moedaA: "USD",
       moedaB: "BRL",
       moedaAA: "",
       moedaBB: "",
       moedaA_value: "1",
       moedaB_value: 0,
+      /* cotação hoje */
       moedasA_value: "1",
       moedasB_value: 0,
       moedasA: "",
