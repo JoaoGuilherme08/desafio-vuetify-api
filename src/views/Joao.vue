@@ -83,6 +83,11 @@
                   </v-col>
                   <v-col cols="2">
                     <v-btn v-on:click="validaPartida">PARTIDA AO VIVO</v-btn>
+                    <v-progress-linear
+                      indeterminate
+                      color="green"
+                      v-show="carregandoPartida"
+                    ></v-progress-linear>
                   </v-col>
                 </v-card-title>
               </v-img>
@@ -203,6 +208,7 @@ export default {
     msgAlert: "",
     modoJogo: "",
     msgShow: false,
+    carregandoPartida: false,
     nameRules: [
       (v) => !!v || "Digite seu Nick",
       (v) => (v && v.length <= 40) || "Name must be less than 40 characters",
@@ -288,7 +294,7 @@ export default {
       );
       const Tier = await getTier.json();
 
-      if (Tier[0].rank != undefined) {
+      if (Tier[0] != undefined && Tier[0].rank != undefined) {
         return "Rank: " + Tier[0].tier + " " + Tier[0].rank;
       } else {
         return "";
@@ -310,7 +316,7 @@ export default {
 
     async validaPartida() {
       try {
-        this.PlayersPartida = true;
+        this.carregandoPartida = true;
 
         const responses = await fetch(
           "https://br1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" +
@@ -362,7 +368,10 @@ export default {
             });
           }
         }
+        this.PlayersPartida = true;
+        this.carregandoPartida = false;
       } catch (error) {
+        console.log(error);
         this.PlayersPartida = false;
         this.msgShow = true;
         this.msgAlert = "O jogador não está em partida no momento.";
