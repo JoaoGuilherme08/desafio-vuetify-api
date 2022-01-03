@@ -50,6 +50,7 @@
         v-model="msgAlert"
         width="500"
         class="mx-auto mt-5"
+        transition="slide-x-reverse-transition"
         >{{ msgAlert }}</v-alert
       >
 
@@ -108,7 +109,7 @@
                 </v-row>
                 <v-row>
                   <v-card-text v-model="UltimoJogo"
-                    >Ultima Jogada: {{ UltimoJogo }}</v-card-text
+                    >Ultima Jogada com o champion: {{ UltimoJogo }}</v-card-text
                   >
                 </v-row>
                 <v-row>
@@ -245,7 +246,12 @@ export default {
         );
         const championData = await responseChampion.json();
         this.Maestria = championData[0].championLevel;
-        this.UltimoJogo = new Date(championData[0].lastPlayTime);
+        this.UltimoJogo =
+          ("0" + new Date(championData[0].lastPlayTime).getDate()).slice(-2) +
+          "/" +
+          new Date(championData[0].lastPlayTime).getMonth() +
+          "/" +
+          new Date(championData[0].lastPlayTime).getFullYear();
         //Fim
 
         //Requisição que retorna todos os campeões da ultima atualização.
@@ -270,7 +276,7 @@ export default {
         const Tier = await getTier.json();
 
         this.carregando = false;
-        if (Tier[0].rank != undefined) {
+        if (Tier[0] != undefined && Tier[0].rank != undefined) {
           this.Tier = Tier[0].tier + " " + Tier[0].rank;
         } else {
           this.Tier = "";
@@ -372,6 +378,7 @@ export default {
         this.carregandoPartida = false;
       } catch (error) {
         console.log(error);
+        this.carregandoPartida = false;
         this.PlayersPartida = false;
         this.msgShow = true;
         this.msgAlert = "O jogador não está em partida no momento.";
@@ -416,7 +423,7 @@ export default {
 
 .v-alert {
   position: fixed;
-  left: 50%;
+  left: 30%;
   bottom: -34px;
   transform: translate(-50%, -50%);
   margin: 0 auto;
